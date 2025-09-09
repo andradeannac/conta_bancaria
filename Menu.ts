@@ -122,17 +122,53 @@ export function main () {
                 console.log(colors.fg.whitestrong, 
                     "\n\nConsultar dados da Conta - por numero\n\n", colors.reset);
 
+                    numero = readlineSync.questionInt("digite o numero da conta: ");
+                    contas.procurarPorNumero(numero);
+
                 keyPress()
                 break;
             case 4:
                 console.log(colors.fg.whitestrong, 
                     "\n\nAtualizar dados da Conta\n\n", colors.reset);
 
+                numero = readlineSync.questionInt("Digite o numero da conta: ");
+
+                let conta = contas.buscarNoArray(numero);
+
+                if(conta != null){
+
+                agencia = readlineSync.questionInt("Digite o numero da agencia: ");
+
+                titular = readlineSync.question("Digite o nome do titular da conta: ");
+
+                tipo = conta.tipo;
+
+                saldo = readlineSync.questionFloat("Digite o valor do saldo da conta (R$): ");
+
+                switch (tipo){
+                    case 1: 
+                        limite = readlineSync.questionFloat("Digite o valor do limite da conta (R$): ");
+                        contas.atualizar(
+                            new ContaCorrente(numero, agencia, tipo, titular, saldo, limite));
+                        break;
+                    case 2:
+                        aniversario = readlineSync.questionInt("Digite o dia do aniversario da conta poupanca: ");
+                        contas.atualizar(
+                            new ContaPoupanca(numero, agencia, tipo, titular, saldo, aniversario));
+                        break
+                }
+
+                }else{
+            console.log(colors.fg.red, "A conta numero:" + numero + " nao foi encontrada.", colors.reset)}
+
                 keyPress()
                 break;
             case 5:
                 console.log(colors.fg.whitestrong, 
                     "\n\nApagar uma Conta\n\n", colors.reset);
+
+                    numero = readlineSync.questionInt("Digite o numero da conta a ser deletada: ");
+                    contas.deletar(numero);
 
                 keyPress()
                 break;
